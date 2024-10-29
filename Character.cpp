@@ -99,6 +99,7 @@ void Character::AddExp(int exp)
 		mExpPoints = mExpPoints + exp - mExpToNextLevel;
 		mExpLevel += 1;
 		mExpToNextLevel += 100;
+		std::cout << "You leveled up to level " << mExpLevel << std::endl << std::endl;
 		LevelUp();
 	}
 	else

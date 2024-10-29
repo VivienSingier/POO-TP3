@@ -2,6 +2,29 @@
 #include <Windows.h>
 #include "Character.h"
 
+#define BLACK 0
+#define RED 4
+#define GREEN 2
+#define YELLOW 6
+#define BLUE 1
+#define MAGENTA 5
+#define CYAN 3
+#define WHITE 15
+#define LIGHTBLUE 9
+#define LIGHTGREEN 10
+
+void SetColor(int color, int bgColor)
+{
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hConsole, (bgColor << 4) | color);
+}
+
+void ResetColor()
+{
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hConsole, (0 << 4) | 7);
+}
+
 void DisplayHealthBar(Character* player)
 {
     int healthCubes = (int)(((float)player->mHealth / (float)player->mMaxHealth) * 20);
@@ -14,6 +37,7 @@ void DisplayHealthBar(Character* player)
     std::cout << "+" << std::endl;
 
     std::cout << "|";
+    SetColor(RED, BLACK);
     for (int i = 0; i < healthCubes; i++)
     {
         for (int j = 0; j < 3; j++)
@@ -21,6 +45,7 @@ void DisplayHealthBar(Character* player)
             std::cout << (char)178;
         };
     }
+    SetColor(YELLOW, BLACK);
     if (healthCubes < 20)
     {
         for (int j = 0; j < 3; j++)
@@ -28,6 +53,7 @@ void DisplayHealthBar(Character* player)
             std::cout << (char)177;
         }
     }
+    ResetColor();
     for (int i = 0; i < 19 - healthCubes; i++)
     {
         for (int j = 0; j < 3; j++)
@@ -50,6 +76,7 @@ void DisplayExpBar(Character* player)
     int expCubes = (int)(((float)player->mExpPoints / (float)player->mExpToNextLevel) * 10);
 
     std::cout << "|";
+    SetColor(GREEN, BLACK);
     for (int i = 0; i < expCubes; i++)
     {
         std::cout << (char)219;
@@ -58,14 +85,29 @@ void DisplayExpBar(Character* player)
     {
         std::cout << " ";
     }
-    std::cout << "|" << std::endl;
+    ResetColor();
+    std::cout << "|";
+    SetColor(GREEN, BLACK);
+    std::cout << " " << player->mExpLevel; 
+    ResetColor();
+    std::cout << " |" << std::endl;
 
     std::cout << "+";
     for (int i = 0; i < 10; i++)
     {
         std::cout << "-";
     }
-    std::cout << "+" << std::endl;
+    std::cout << "+---+" << std::endl;
+}
+
+void DisplayPotionCount(Character* player)
+{
+    std::cout << "| ";
+    SetColor(MAGENTA, BLACK);
+    std::cout << player->mPotionCount;
+    ResetColor();
+    std::cout << " |" << std::endl;
+    std::cout << "+---+" << std::endl;
 }
 
 bool Fight(Character* c1, Character* c2)
@@ -78,6 +120,7 @@ bool Fight(Character* c1, Character* c2)
         system("cls");
         DisplayHealthBar(c1);
         DisplayExpBar(c1);
+        DisplayPotionCount(c1);
 
         int damage = attackChar->mAttack;
         damage = defenseChar->TakeDamage(damage);
@@ -88,7 +131,7 @@ bool Fight(Character* c1, Character* c2)
         Character* temp = attackChar;
         attackChar = defenseChar;
         defenseChar = temp;
-        Sleep(1500);
+        Sleep(500);
     }
     if (c1->IsDead())
     {
@@ -127,18 +170,19 @@ void Game()
             NextEnnemie(EnnemieStats);
             Player.GetPotion();
 
+            SetColor(GREEN, BLACK);
+            int expGain = GetExpGain(EnnemieStats);
+            std::cout << "You gained " << expGain << " XP" << std::endl;
+            Player.AddExp(expGain);
+            ResetColor();
+
             if (Player.mPotionCount > 0)
             {
                 Player.AskPotionUse();
             }
-
-            int expGain = GetExpGain(EnnemieStats);
-            Player.AddExp(expGain);
         }
-        Sleep(0);
     }
     std::cout << "YOU LOST" << std::endl;
-    std::cout << EnnemieStats[0] << " | " << EnnemieStats[1] << " | " << EnnemieStats[2] << " | " << std::endl;
 }
 
 int main()
