@@ -23,5 +23,6 @@ public:
 	void AddExp(int exp);
 	void GetPotion();
 	void AskPotionUse();
+	virtual void SpecialAbility() {}
 };
 

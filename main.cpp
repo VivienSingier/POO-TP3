@@ -1,6 +1,7 @@
 #include <iostream>
 #include <Windows.h>
 #include "Character.h"
+#include "Warrior.h"
 
 #define BLACK 0
 #define RED 4
@@ -122,6 +123,8 @@ bool Fight(Character* c1, Character* c2)
         DisplayExpBar(c1);
         DisplayPotionCount(c1);
 
+        attackChar->SpecialAbility();
+
         int damage = attackChar->mAttack;
         damage = defenseChar->TakeDamage(damage);
 
@@ -159,26 +162,26 @@ int GetExpGain(int* pEnnemieStats)
 
 void Game()
 {
-    Character Player = Character("Player", 100, 20, 10);
+    Character* Player = new Warrior();
     int EnnemieStats[3] = { 20, 2, 1 };
 
-    while (!Player.IsDead())
+    while (!Player->IsDead())
     {
         Character Ennemie = Character("Ennemie", EnnemieStats[0], EnnemieStats[1], EnnemieStats[2]);
-        if (Fight(&Player, &Ennemie))
+        if (Fight(Player, &Ennemie))
         {
             NextEnnemie(EnnemieStats);
-            Player.GetPotion();
+            Player->GetPotion();
 
             SetColor(GREEN, BLACK);
             int expGain = GetExpGain(EnnemieStats);
             std::cout << "You gained " << expGain << " XP" << std::endl;
-            Player.AddExp(expGain);
+            Player->AddExp(expGain);
             ResetColor();
 
-            if (Player.mPotionCount > 0)
+            if (Player->mPotionCount > 0)
             {
-                Player.AskPotionUse();
+                Player->AskPotionUse();
             }
         }
     }
