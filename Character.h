@@ -16,9 +16,10 @@ public:
 	Character(const char* name, int maxHealth, int attack, int defense);
 
 	void ShowStats();
-	int TakeDamage(int damage);
+	virtual int TakeDamage(int damage);
+	virtual int DealDamage(Character* c);
 	bool IsDead();
-	void LevelUp();
+	virtual void LevelUp();
 	void Heal(int hp);
 	void AddExp(int exp);
 	void GetPotion();

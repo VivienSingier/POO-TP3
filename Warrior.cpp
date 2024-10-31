@@ -3,25 +3,56 @@
 
 Warrior::Warrior() : Character("Warrior", 100, 30, 25)
 {
-	mAbilityDurationCounter = 0;
+	mIsWarCry = false;
+	mIsAbilityReady = false;
+	mDamageBoost = 25;
+	mAbilityCooldown = 10;
+	mAbilityDuration = 3;
+}
+
+int Warrior::DealDamage(Character* c)
+{
+	if (mIsWarCry)
+	{
+		mAttack += mDamageBoost;
+	}
+	int damage = Character::DealDamage(c);
+	if (mIsWarCry)
+	{
+		mAttack -= mDamageBoost;
+	}
+	CooldownAbility();
+	return damage;
 }
 
 void Warrior::SpecialAbility() 
 {
-	if (mAbilityDurationCounter == 10)
+	if (!mIsWarCry && mIsAbilityReady)
 	{
-		mAttack -= 20;
-		mDefense += 5;
+		mIsWarCry = true;
+		mAbilityCooldown = 10;
+		mAbilityDuration = 3;
 	}
-	if (mAbilityDurationCounter == 0)
-	{
-		mAttack += 20;
-		mDefense -= 5;
-		mAbilityDurationCounter = 13;
-		std::cout << "Your Warrior juste used his WAR CRY ability" << std::endl;
-	}
+}
 
-	mAbilityDurationCounter -= 1;
-	std::cout << mAbilityDurationCounter << std::endl;
+void Warrior::CooldownAbility()
+{
+	if (mIsWarCry && mAbilityDuration > 0)
+	{
+		mAbilityDuration -= 1;
+	}
+	else if (mAbilityCooldown > 0)
+	{
+		mAbilityCooldown -= 1;
+	}
+	if (mAbilityDuration == 0)
+	{
+		mIsWarCry = false;
+		mIsAbilityReady = false;
+	}
+	if (mAbilityCooldown == 0)
+	{
+		mIsAbilityReady = true;
+	}
 }
 

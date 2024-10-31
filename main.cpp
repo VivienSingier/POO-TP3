@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include "Character.h"
 #include "Warrior.h"
+#include "Mage.h"
 
 #define BLACK 0
 #define RED 4
@@ -125,8 +126,7 @@ bool Fight(Character* c1, Character* c2)
 
         attackChar->SpecialAbility();
 
-        int damage = attackChar->mAttack;
-        damage = defenseChar->TakeDamage(damage);
+        int damage = attackChar->DealDamage(defenseChar);
 
         std::cout << attackChar->mName << " just attacked " << defenseChar->mName << " for " << damage << " damage." << std::endl;
         std::cout << defenseChar->mName << " now has " << defenseChar->mHealth << " HP remaining." << std::endl << std::endl;

@@ -43,6 +43,11 @@ int Character::TakeDamage(int damage)
 	return damage;
 }
 
+int Character::DealDamage(Character* c)
+{
+	return c->TakeDamage(mAttack);
+}
+
 bool Character::IsDead()
 {
 	return mHealth == 0;

@@ -3,10 +3,16 @@
 
 class Warrior : public Character
 {
-	int mAbilityDurationCounter;
+	bool mIsWarCry;
+	bool mIsAbilityReady;
+	int mDamageBoost;
+	int mAbilityCooldown;
+	int mAbilityDuration;
 
 public :
 	Warrior();
+	int DealDamage(Character* c) override;
 	void SpecialAbility() override;
+	void CooldownAbility();
 };
 
