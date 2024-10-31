@@ -1,23 +1,34 @@
 #include "Mage.h"
 #include <iostream>
 
-Mage::Mage() : Character::Character("Mage", 130, 20, 10)
+Mage::Mage() : Character::Character("Mage", 130, 10, 10)
 {
 	mMaxMana = 100;
 	mMana = 100;
+	mFireBallBoost = 30;
 	mIsfireball = false;
 }
 
-int Mage::TakeDamage(int damage)
+int Mage::DealDamage(Character* c)
 {
-	return 0;
+	if (mIsfireball)
+	{
+		mAttack += mFireBallBoost;
+	}
+	int damage = Character::DealDamage(c);
+	if (mIsfireball)
+	{
+		mAttack -= mFireBallBoost;
+	}
+
+	return damage;
 }
 
 void Mage::LevelUp()
 {
 	Character::LevelUp();
 	mMaxMana += mMaxMana / 20;
-	mMana = mMana;
+	mMana = mMaxMana;
 }
 
 void Mage::SpecialAbility()
@@ -31,9 +42,13 @@ void Mage::SpecialAbility()
 		}
 		else
 		{
-			mAttack += 40;
 			mIsfireball = true;
 			std::cout << "Your mage just threw a fireball spell" << std::endl;
 		}
+		mMana -= 30;
+	}
+	else
+	{
+		std::cout << "Your mage doesn't have enough mana" << std::endl;
 	}
 }

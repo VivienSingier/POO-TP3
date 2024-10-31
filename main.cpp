@@ -157,12 +157,12 @@ void NextEnnemie(int* pEnnemieStats)
 
 int GetExpGain(int* pEnnemieStats)
 {
-    return pEnnemieStats[0] + pEnnemieStats[1] * 3 + pEnnemieStats[2] * 5;
+    return pEnnemieStats[0]  + pEnnemieStats[1] * 3 + pEnnemieStats[2] * 5;
 }
 
 void Game()
 {
-    Character* Player = new Warrior();
+    Character* Player = new Mage();
     int EnnemieStats[3] = { 20, 2, 1 };
 
     while (!Player->IsDead())
