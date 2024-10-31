@@ -1,7 +1,7 @@
 #include "Warrior.h"
 #include <iostream>
 
-Warrior::Warrior() : Character("Warrior", 100, 30, 25)
+Warrior::Warrior() : Character("Warrior", 120, 30, 25)
 {
 	mIsWarCry = false;
 	mIsAbilityReady = false;

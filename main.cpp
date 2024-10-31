@@ -3,6 +3,7 @@
 #include "Character.h"
 #include "Warrior.h"
 #include "Mage.h"
+#include "Archer.h"
 
 #define BLACK 0
 #define RED 4
@@ -162,7 +163,7 @@ int GetExpGain(int* pEnnemieStats)
 
 void Game()
 {
-    Character* Player = new Mage();
+    Character* Player = new Archer();
     int EnnemieStats[3] = { 20, 2, 1 };
 
     while (!Player->IsDead())
