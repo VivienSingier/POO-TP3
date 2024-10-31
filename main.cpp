@@ -113,6 +113,47 @@ void DisplayPotionCount(Character* player)
     std::cout << "+---+" << std::endl;
 }
 
+bool CheckRosterIntegrity(Character** player)
+{
+
+}
+
+int ChooseCharacter()
+{
+    char input = ' ';
+    bool isCorrectChar = ((int)input != (int)('w') && (int)input != (int)('W') && (int)input != (int)('m') 
+        && (int)input != (int)('M') && (int)input != (int)('a') && (int)input != (int)('A'));
+    std::cout << "Which character do you want to send to the fight ? (W : Warrior, M : Mage, A : Archer) : ";
+    std::cin >> input;
+
+    while (!isCorrectChar || std::cin.peek() != '\n')
+        // Si l'entrée contient plus d'un char ou il n'est parmis les choix indiqués
+    {
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+
+        std::cout << "INVALID INPUT, please try again" << std::endl;
+        std::cout << "Which character do you want to send to the fight ? (W : Warrior, M : Mage, A : Archer) : ";
+        std::cin >> input;
+    }
+
+    switch (input)
+    {
+    case 'w':
+    case 'W':
+        return 0;
+        break;
+    case 'm':
+    case 'M':
+        return 1;
+        break;
+    case 'a':
+    case 'A':
+        return 2;
+        break;
+    }
+}
+
 bool Fight(Character* c1, Character* c2)
 {
     Character* attackChar = c1;
@@ -163,7 +204,11 @@ int GetExpGain(int* pEnnemieStats)
 
 void Game()
 {
-    Character* Player = new Archer();
+    Character* Roster[3];
+    Roster[0] = new Warrior();
+    Roster[1] = new Mage();
+    Roster[2] = new Archer();
+
     int EnnemieStats[3] = { 20, 2, 1 };
 
     while (!Player->IsDead())
